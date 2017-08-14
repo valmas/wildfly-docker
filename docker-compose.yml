@@ -1,0 +1,23 @@
+version: '2'
+services:
+ app: 
+  labels:
+   - "SERVICE_NAME=tram"
+  build: .
+  environment:
+   DB_CONNECTION_URL: "jdbc:oracle:thin:@//gemini:1525/PTM11G"
+   DB_USER: "norac"
+   DB_PASS: "norac"
+  ports:
+   - "8080:8080"
+   - "8788:8787"
+   - "9990:9990"
+  image: "norac/base-wildfly"
+  volumes:
+   - "tram_log:/opt/jboss/wildfly/standalone/log"
+   - "tram_deployments:/opt/jboss/wildfly/standalone/deployments"
+   - "/path/to/runtime/properties:/home/norac/config"
+volumes:
+ # tram volumes
+ tram_deployments:
+ tram_log:

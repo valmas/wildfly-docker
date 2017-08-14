@@ -1,0 +1,21 @@
+# Requires Wildfly 9 or above as it uses embedded server #
+embed-server --server-config=standalone-full.xml
+
+batch
+
+## Load Oracle driver ##
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle)
+
+## Add Queues ##
+jms-queue add --queue-address=nr_input --entries=java:/jms/queue/nr_input
+jms-queue add --queue-address=nr_alert --entries=java:/jms/queue/nr_alert
+jms-queue add --queue-address=nr_out --entries=java:/jms/queue/nr_out
+jms-queue add --queue-address=nr_dead --entries=java:/jms/queue/nr_dead
+
+## Logging ##
+/subsystem=logging/periodic-rotating-file-handler=racHandler:add(autoflush=true, level=ALL, append=true, suffix=.yyyy-MM-dd, file={relative-to=jboss.server.log.dir, path=RAC.log})
+/subsystem=logging/logger=com.ii:add(use-parent-handlers=false, level=INFO, handlers=[racHandler])
+
+run-batch
+reload
+stop-embedded-server

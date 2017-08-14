@@ -1,0 +1,5 @@
+<module xmlns="urn:jboss:module:1.1" name="com.ii.configuration">
+    <resources>
+        <resource-root path="."/>
+    </resources>
+</module>

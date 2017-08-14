@@ -1,0 +1,10 @@
+# Requires Wildfly 9 or above as it uses embedded server #
+embed-server --server-config=standalone-full.xml
+batch
+
+### NORAC DATASOURCE ###
+data-source add --name=NoracDS --jndi-name=java:/NoracDS --driver-name=oracle --connection-url=${db.connection.url} --user-name=${db.user} --password=${db.pass}
+
+run-batch
+reload
+stop-embedded-server
